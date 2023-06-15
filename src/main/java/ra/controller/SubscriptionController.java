@@ -34,9 +34,9 @@ public class SubscriptionController {
         return ResponseEntity.ok("Số sub của kênh bạn là  : "+subCount);
     }
     @PostMapping("/createSub")
-    public ResponseEntity<?> createLike (@RequestBody SubscriptionRequest sub){
-        Users user= userService.findById(sub.getUserId());
-        Channel channel= chanelService.findById(sub.getChannelId());
+    public ResponseEntity<?> createLike (@RequestBody Subscription sub){
+        Users user= userService.findById(sub.getUser().getUserId());
+        Channel channel= chanelService.findById(sub.getChannel().getChannel_id());
         Optional<Subscription> check = subscriptionService.findSubscriptionsByUserAndChannel(user,channel);
         if (channel == null){
             return  ResponseEntity.badRequest().body("Kênh không tồn tại!!!!!");
@@ -49,8 +49,8 @@ public class SubscriptionController {
             channel.setSubscription(channel.getSubscription() + 1);
             chanelService.save(channel);
             Subscription s = new Subscription();
-            s.setUser(userService.findById(sub.getUserId()));
-            s.setChannel(chanelService.findById(sub.getChannelId()));
+            s.setUser(userService.findById(sub.getUser().getUserId()));
+            s.setChannel(chanelService.findById(sub.getChannel().getChannel_id()));
             return ResponseEntity.ok(subscriptionService.save(s) + " Bạn đã đăng ký kênh ");
         }
 
