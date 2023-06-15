@@ -48,7 +48,6 @@ public class Users {
     @Column(name = "subscriptions")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
-
     private List<Subscription> subscriptions = new ArrayList<>();
 
     @OneToOne( mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)

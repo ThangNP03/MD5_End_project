@@ -34,6 +34,10 @@ public class Channel {
     @JsonIgnore
     private Users user;
 
+
+    @JoinColumn(name = "subscription")
+    private int subscription;
+
     public void setStatus(boolean status) {
         this.status = status;
     }

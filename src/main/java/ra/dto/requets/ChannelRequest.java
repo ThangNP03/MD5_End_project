@@ -22,4 +22,5 @@ public class ChannelRequest {
     private int statusCode;
     private boolean status ;
     private Long user;
+    private int subscription;
 }

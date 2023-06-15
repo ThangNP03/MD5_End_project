@@ -1,20 +1,17 @@
 package ra.dto.requets;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ra.entity.Channel;
-import ra.entity.user.Users;
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class SubscriptionRequest {
+    private Long subId;
 
-    private Long sub_id;
+    private Long userId;
 
-    private boolean isSubscribed;
-
-    private Users user;
-
-
-    private Channel channel;
+    private Long channelId;
 }
