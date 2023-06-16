@@ -1,16 +1,14 @@
 package ra.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import ra.entity.user.Users;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -32,6 +30,7 @@ public class Videos {
     private String url_videos;
 
     @Column(name = "likes")
+    @JsonIgnore
     private int like;
 
     @Column(name = "disLikes")
@@ -54,4 +53,20 @@ public class Videos {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
+
+    @Override
+    public String toString() {
+        return "Videos{" +
+                "videoId=" + videoId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", url_videos='" + url_videos + '\'' +
+                ", like=" + like +
+                ", disLikes=" + disLikes +
+                ", status=" + status +
+                ", views=" + views +
+                ", create_at=" + create_at +
+                ", channels=" + channels +
+                '}';
+    }
 }

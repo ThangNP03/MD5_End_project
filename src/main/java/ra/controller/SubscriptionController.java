@@ -43,6 +43,7 @@ public class SubscriptionController {
         }
         if (check.isPresent()){
            channel.setSubscription(channel.getSubscription() - 1);
+           subscriptionService.deleteBySubId(check.get().getSub_id());
             chanelService.save(channel);
             return  ResponseEntity.badRequest().body("Bạn đã hủy đăng ký kênh!!!! ");
         } else {
@@ -51,7 +52,8 @@ public class SubscriptionController {
             Subscription s = new Subscription();
             s.setUser(userService.findById(sub.getUser().getUserId()));
             s.setChannel(chanelService.findById(sub.getChannel().getChannel_id()));
-            return ResponseEntity.ok(subscriptionService.save(s) + " Bạn đã đăng ký kênh ");
+            subscriptionService.save(s);
+            return ResponseEntity.ok(  " Bạn đã đăng ký kênh ");
         }
 
     }

@@ -40,8 +40,9 @@ public class LikeController {
             return  ResponseEntity.badRequest().body("Video không tồn tại!!!!!");
         }
         if (check.isPresent()){
-            videos.setStatus(false);
+            videos.setStatus(true);
             videos.setLike(videos.getLike() - 1);
+            likeService.deleteById(check.get().getLike_id());
             videoService.save(videos);
             return  ResponseEntity.badRequest().body("Bạn đã bỏ like  video !!!! ");
         }
@@ -52,7 +53,8 @@ public class LikeController {
             Likes likes = new Likes();
             likes.setUser(userService.findById(likeRequest.getUserId()));
             likes.setVideos(videoService.findById(likeRequest.getVideoId()));
-            return ResponseEntity.ok(likeService.save(likes) + " Bạn đã like video");
+            likeService.save(likes);
+            return ResponseEntity.ok(  " Bạn đã like video");
         }
 
     }

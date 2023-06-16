@@ -1,5 +1,6 @@
 package ra.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,8 @@ public class Likes {
 
     @ManyToOne
     @JoinColumn(name = "videoId")
+    @JsonIgnore
     private Videos videos;
+
     private Boolean statusVid;
 }

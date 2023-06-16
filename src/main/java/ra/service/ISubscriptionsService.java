@@ -13,4 +13,6 @@ public interface ISubscriptionsService extends IGenericService<Subscription, Lon
 
     @Query("select  count (s) from Subscription s where s.sub_id =: channel_id")
     Long countSubscriptionByChannel_id(@Param("channel_id") Long channel_id);
+
+    void deleteBySubId(Long id);
 }

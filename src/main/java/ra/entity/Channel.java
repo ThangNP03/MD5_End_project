@@ -1,10 +1,7 @@
 package ra.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ra.entity.user.Users;
 
 import javax.persistence.*;
@@ -12,7 +9,8 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @Table(name = "channel")
@@ -29,12 +27,11 @@ public class Channel {
     private int statusCode;
     @Column(name = "status")
     private boolean status = setStatus();
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private Users user;
-
-
     @JoinColumn(name = "subscription")
     private int subscription;
 

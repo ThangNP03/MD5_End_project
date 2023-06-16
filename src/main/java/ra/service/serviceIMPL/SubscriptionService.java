@@ -45,4 +45,9 @@ public class SubscriptionService implements ISubscriptionsService {
     public Long countSubscriptionByChannel_id(Long channel_id) {
         return subscriptionRepository.countSubscriptionByChannel_id(channel_id);
     }
+
+    @Override
+    public void deleteBySubId(Long id) {
+        subscriptionRepository.deleteBySubId(id);
+    }
 }

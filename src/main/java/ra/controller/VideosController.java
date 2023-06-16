@@ -76,8 +76,8 @@ public class VideosController {
                 default:
                     break;
             }
-            videoService.save(videos);
             videos.setStatus(true);
+            videoService.save(videos);
             return ResponseEntity.ok(new ResponseMessage("Thêm mới videos thành công "));
         }
        return ResponseEntity.ok(new ResponseMessage("Kênh của bạn đã bị khóa không thể thêm video"));
