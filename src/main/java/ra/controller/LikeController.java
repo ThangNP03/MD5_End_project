@@ -29,35 +29,71 @@ public class LikeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findLikeByVideoId(@PathVariable Long id){
         Long likeCount = likeService.countLikesByVideos(id);
-        return ResponseEntity.ok("Số lượt like là : "+likeCount);
+        return ResponseEntity.ok("Số lượt like là : "+ likeCount);
     }
-    @PostMapping("/createLike")
-    public ResponseEntity<?> createLike (@RequestBody LikeRequest likeRequest){
-        Optional<Likes> check = likeService.findLikesByUserAndVideos(likeRequest.getUserId(), likeRequest.getVideoId());
-        Videos videos = videoService.findById(likeRequest.getVideoId());
-//        Users user = new CustomUserDetailsService().getUserPrincipal();
-        if (videos == null){
-            return  ResponseEntity.badRequest().body("Video không tồn tại!!!!!");
-        }
-        if (check.isPresent()){
-            videos.setStatus(true);
-            videos.setLike(videos.getLike() - 1);
-            likeService.deleteById(check.get().getLike_id());
-            videoService.save(videos);
-            return  ResponseEntity.badRequest().body("Bạn đã bỏ like  video !!!! ");
-        }
-        else {
-            videos.setStatus(true);
-            videos.setLike(videos.getLike() + 1);
-            videoService.save(videos);
-            Likes likes = new Likes();
-            likes.setUser(userService.findById(likeRequest.getUserId()));
-            likes.setVideos(videoService.findById(likeRequest.getVideoId()));
-            likeService.save(likes);
-            return ResponseEntity.ok(  " Bạn đã like video");
-        }
 
+@PostMapping("/createLike")
+public ResponseEntity<?> createLike(@RequestBody LikeRequest likeRequest) {
+    Videos videos = videoService.findById(likeRequest.getVideoId());
+    Optional<Likes> likesOptional = likeService.findLikesByUserUserIdAndVideosVideoId(likeRequest.getUserId(),likeRequest.getVideoId());
+    if (likesOptional.isPresent()){
+        // có bày tỏ cảm xúc r
+        Likes likes =likesOptional.get();
+        if(likes.getStatusVid()){
+            // đang like
+            likeService.deleteById(likes.getLike_id());
+            videos.setLike(videos.getLike() - 1);
+            videoService.save(videos);
+            return ResponseEntity.ok("Bạn đã BỎ  like video!!!");
+        }else {
+            // đang dislike
+            likes.setStatusVid(true);
+            likeService.save(likes);
+
+            videos.setLike(videos.getLike() + 1);
+            videos.setDisLikes(videos.getDisLikes() - 1);
+            videoService.save(videos);
+        }
+    }else {
+        Likes likes = Likes.builder().user(userService.findById(likeRequest.getUserId()))
+                .videos(videos).statusVid(true).build();
+        likeService.save(likes);
+        videos.setLike(videos.getLike()+1);
+        videoService.save(videos);
     }
+    return ResponseEntity.ok("Bạn đã like video!!!");
+}
+    @PostMapping("/createDislike")
+    public ResponseEntity<?> createDislike(@RequestBody LikeRequest likeRequest) {
+        Videos videos = videoService.findById(likeRequest.getVideoId());
+        Optional<Likes> likesOptional = likeService.findLikesByUserUserIdAndVideosVideoId(likeRequest.getUserId(),likeRequest.getVideoId());
+        if (likesOptional.isPresent()){
+            // có bày tỏ cảm xúc r
+            Likes likes =likesOptional.get();
+            if(!likes.getStatusVid()){
+                // đang dis like
+                likeService.deleteById(likes.getLike_id());
+                videos.setDisLikes(videos.getDisLikes() - 1);
+                videoService.save(videos);
+                return ResponseEntity.ok("Bạn đã BỎ  dislike video!!!");
+            }else {
+                // đang like
+                likes.setStatusVid(false);
+                likeService.save(likes);
+                videos.setDisLikes(videos.getDisLikes() + 1);
+                videos.setLike(videos.getLike() - 1);
+                videoService.save(videos);
+            }
+        }else {
+            Likes likes = Likes.builder().user(userService.findById(likeRequest.getUserId()))
+                    .videos(videos).statusVid(false).build();
+            likeService.save(likes);
+            videos.setDisLikes(videos.getDisLikes() +1 );
+            videoService.save(videos);
+        }
+        return ResponseEntity.ok("Bạn đã dislike video!!!");
+    }
+
 }
 
 

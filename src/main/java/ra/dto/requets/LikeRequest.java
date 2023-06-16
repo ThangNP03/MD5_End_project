@@ -12,4 +12,5 @@ public class LikeRequest {
     private Long id;
    private Long userId;
     private Long videoId;
+    private Boolean statusVid;
 }

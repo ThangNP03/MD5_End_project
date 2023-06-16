@@ -84,4 +84,13 @@ public class AuthController {
         Users user = new Users(formRegister.getUsername(), formRegister.getEmail(),encoder.encode(formRegister.getPassword()), listRoles);
         userService.save(user);
         return ResponseEntity.ok(new ResponseMessage("Register success"));
-    }}
+    }
+@GetMapping("/logout")
+    public String logout(){
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null) {
+        SecurityContextHolder.clearContext();
+    }
+    return "Đăng xuất thành công";
+}
+}

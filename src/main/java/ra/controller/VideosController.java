@@ -102,80 +102,16 @@ public class VideosController {
         videoService.deleteById(id);
         return ResponseEntity.ok(new ResponseMessage("xóa thành công"));
     }
-    // tăng lượt  like Videos
-//    @PutMapping("/increase_likes/{id}")
-//    public ResponseEntity<?> increase_likes (@PathVariable Long id,@PathVariable Long userId, @RequestBody Videos videos) {
-//        Videos update = videoService.findById(id);
-//
-//        if (update != null) {
-//            videos.setVideo_id(update.getVideo_id());
-//            videos.setLikes(update.getLikes().get() + 1);
-//            videoService.save(videos);
-//            return ResponseEntity.ok(new ResponseMessage("Bạn đã thích video"  ) );
-//        }
-//        else {
-//            return ResponseEntity.ok(new ResponseMessage("Bạn đã thích video trước đó"  ) );
-//        }
-//    }
-//
-//    // bỏ đi lượt like của mình
-//    @PutMapping("/decrease_likes/{id}")
-//    public ResponseEntity<?> decrease_likes(@PathVariable Long id,@RequestBody Videos videos){
-//        Videos update = videoService.findById(id);
-//        if (update != null) {
-//            videos.setVideo_id(update.getVideo_id());
-//            videos.setLike(update.getLike() - 1);
-//            videoService.save(videos);
-//            return ResponseEntity.ok(new ResponseMessage("Bạn đã Không thích video"  ) );
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy video !!!!");
-//
-//    }
-//    // tăng lượt dislike
-//    @PutMapping("/increase_disLikes/{id}")
-//    public ResponseEntity<?> increase_disLikes (@PathVariable Long id, @RequestBody Videos videos) {
-//        Videos update = videoService.findById(id);
-//        if (update != null) {
-//            videos.setVideo_id(update.getVideo_id());
-//            videos.setLike(update.getLike() + 1);
-//            videoService.save(videos);
-//            return ResponseEntity.ok(new ResponseMessage("Bạn đã không  thích video"  ) );
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy video !!!!");
-//    }
-//
-//    // bỏ đi lượt like của mình
-//    @PutMapping("/decrease_disLikes/{id}")
-//    public ResponseEntity<?> decrease_disLikes(@PathVariable Long id,@RequestBody Videos videos){
-//        Videos update = videoService.findById(id);
-//        if (update != null) {
-//            videos.setVideo_id(update.getVideo_id());
-//            videos.setLike(update.getLike() - 1);
-//            videoService.save(videos);
-//            return ResponseEntity.ok(new ResponseMessage("Bạn đã bỏ không thích video"  ) );
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy video !!!!");
-//
-//    }
-    // Tính lượt views của video
-    @PutMapping("/views/{id}")
-    public ResponseEntity<?> views (@PathVariable Long id, @RequestBody VideoRequest videoRequest) {
-        Long channel_id = videoRequest.getChannel();
-        Channel channel = chanelService.findById(channel_id);
-        Videos videos = Videos.builder().videoId(videoRequest.getVideo_id())
-                .title(videoRequest.getTitle())
-                .url_videos(videoRequest.getUrl_videos())
-                .description(videoRequest.getDescription())
-                .status(videoRequest.isStatus())
-                .channels(channel).create_at(new Date()).build();
 
-        if (videos != null) {
-            videoRequest.setVideo_id(videos.getVideoId());
-            videoRequest.setViews(videos.getViews() + 1);
-            videoService.save(videos);
-            return ResponseEntity.ok(new ResponseMessage("Bạn đã xem video"  ) );
+    @PutMapping("/views/{id}")
+    public ResponseEntity<?> views(@PathVariable Long id) {
+        Videos video = videoService.findById(id);
+        if (video != null) {
+            video.setViews(video.getViews() + 1);
+            videoService.save(video);
+            return ResponseEntity.ok(new ResponseMessage("Video tăng 1 view"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy video !!!!");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("video not found");
     }
 
 }

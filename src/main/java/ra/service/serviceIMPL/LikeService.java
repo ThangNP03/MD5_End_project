@@ -19,8 +19,8 @@ public class LikeService implements ILikeService {
     private ILikesRepository likesRepository;
 
     @Override
-    public Optional<Likes> findLikesByUserAndVideos(Long user_id, Long videoId) {
-        return likesRepository.findLikesByUserUserIdAndVideosVideoId(user_id, videoId);
+    public Optional<Likes> findLikesByUserUserIdAndVideosVideoIdAndStatusVid(Long user_id, Long videoId, Boolean statusVid) {
+        return likesRepository.findLikesByUserUserIdAndVideosVideoIdAndStatusVid(user_id, videoId,statusVid);
     }
 
     @Override
@@ -48,5 +48,15 @@ public class LikeService implements ILikeService {
     @Override
     public Likes findById(Long id) {
         return likesRepository.findById(id).get();
+    }
+
+    @Override
+    public void deleteByDislike(Long id) {
+        likesRepository.deleteByDislike(id);
+    }
+
+    @Override
+    public Optional<Likes> findLikesByUserUserIdAndVideosVideoId(Long user_id, Long video_id) {
+        return likesRepository.findLikesByUserUserIdAndVideosVideoId(user_id,video_id);
     }
 }
