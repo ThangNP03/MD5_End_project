@@ -36,6 +36,7 @@ public class CommentController {
         return listComment;
     }
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> createComment(@RequestBody CommentRequest commentRequest){
         Long id = commentRequest.getUserId();
         Users userId = userService.findById(id);
@@ -47,6 +48,7 @@ public class CommentController {
          return ResponseEntity.ok().body("thêm mới thành công ");
     }
     @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> updateComment(@RequestBody CommentRequest commentRequest){
         Long id = commentRequest.getUserId();
         Users userId = userService.findById(id);
@@ -67,6 +69,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tim thấy kênh muốn chỉnh sửa !!!!");
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> delete (@PathVariable Long id){
         commentService.deleteById(id);
         return ResponseEntity.ok("Xóa thành công !!!");

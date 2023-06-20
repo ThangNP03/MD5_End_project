@@ -20,7 +20,6 @@ public interface ISubscriptionRepository extends JpaRepository<Subscription, Lon
     Optional<Subscription> findSubscriptionsByUserAndChannel(Users users, Channel  channel);
     @Query("select  count (s) from Subscription s where s.sub_id =: channel_id")
     Long countSubscriptionByChannel_id(@Param("channel_id") Long channel_id);
-
     @Modifying
     @Transactional
     @Query(value = "delete from subscription where sub_id =?1", nativeQuery = true)

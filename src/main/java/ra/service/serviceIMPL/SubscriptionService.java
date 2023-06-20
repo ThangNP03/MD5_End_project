@@ -50,4 +50,6 @@ public class SubscriptionService implements ISubscriptionsService {
     public void deleteBySubId(Long id) {
         subscriptionRepository.deleteBySubId(id);
     }
+
+
 }

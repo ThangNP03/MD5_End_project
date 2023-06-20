@@ -38,4 +38,9 @@ public class VideoService implements IVideoService {
     public boolean findByLike(Users users) {
         return videoRepository.findByLike(users);
     }
+
+    @Override
+    public List<Videos> searchVideosByTitle(String title) {
+        return videoRepository.findByTitleContains(title);
+    }
 }

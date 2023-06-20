@@ -2,6 +2,7 @@ package ra.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ra.dto.requets.LikeRequest;
 import ra.entity.Likes;
@@ -27,12 +28,14 @@ public class LikeController {
     private IVideoService videoService;
 
     @GetMapping("/{id}")
+
     public ResponseEntity<?> findLikeByVideoId(@PathVariable Long id){
         Long likeCount = likeService.countLikesByVideos(id);
         return ResponseEntity.ok("Số lượt like là : "+ likeCount);
     }
 
 @PostMapping("/createLike")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
 public ResponseEntity<?> createLike(@RequestBody LikeRequest likeRequest) {
     Videos videos = videoService.findById(likeRequest.getVideoId());
     Optional<Likes> likesOptional = likeService.findLikesByUserUserIdAndVideosVideoId(likeRequest.getUserId(),likeRequest.getVideoId());
@@ -64,6 +67,7 @@ public ResponseEntity<?> createLike(@RequestBody LikeRequest likeRequest) {
     return ResponseEntity.ok("Bạn đã like video!!!");
 }
     @PostMapping("/createDislike")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> createDislike(@RequestBody LikeRequest likeRequest) {
         Videos videos = videoService.findById(likeRequest.getVideoId());
         Optional<Likes> likesOptional = likeService.findLikesByUserUserIdAndVideosVideoId(likeRequest.getUserId(),likeRequest.getVideoId());

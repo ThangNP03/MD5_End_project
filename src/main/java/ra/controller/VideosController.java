@@ -37,6 +37,7 @@ public class VideosController {
         return list_video;
     }
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> createChannel( @RequestBody VideoRequest videoRequest ) {
         Long channel_id = videoRequest.getChannel();
         Long user_id = videoRequest.getUser();
@@ -80,10 +81,13 @@ public class VideosController {
             videoService.save(videos);
             return ResponseEntity.ok(new ResponseMessage("Thêm mới videos thành công "));
         }
+        videos.setStatus(false);
+        videoService.save(videos);
        return ResponseEntity.ok(new ResponseMessage("Kênh của bạn đã bị khóa không thể thêm video"));
 
     }
     @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> updateChannel( @RequestBody VideoRequest videoRequest) {
         Long channel_id = videoRequest.getChannel();
         Channel channel = chanelService.findById(channel_id);
@@ -98,12 +102,14 @@ public class VideosController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> deleteById(@PathVariable("id") Long id){
         videoService.deleteById(id);
         return ResponseEntity.ok(new ResponseMessage("xóa thành công"));
     }
 
     @PutMapping("/views/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> views(@PathVariable Long id) {
         Videos video = videoService.findById(id);
         if (video != null) {
@@ -112,6 +118,10 @@ public class VideosController {
             return ResponseEntity.ok(new ResponseMessage("Video tăng 1 view"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("video not found");
+    }
+    @GetMapping("/search/{title}")
+    public List<Videos> search(@PathVariable("title") String title){
+        return  videoService.searchVideosByTitle(title);
     }
 
 }

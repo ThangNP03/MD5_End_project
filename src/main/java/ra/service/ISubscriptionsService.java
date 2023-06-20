@@ -15,4 +15,5 @@ public interface ISubscriptionsService extends IGenericService<Subscription, Lon
     Long countSubscriptionByChannel_id(@Param("channel_id") Long channel_id);
 
     void deleteBySubId(Long id);
+
 }

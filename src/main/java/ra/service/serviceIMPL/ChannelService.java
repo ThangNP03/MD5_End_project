@@ -40,4 +40,9 @@ public class ChannelService implements IChanelService {
     public Boolean existsByUser(Users users) {
         return chanelRepository.existsByUser(users);
     }
+
+    @Override
+    public List<Channel> searchChannelByChannel_nameContains(String channelName) {
+        return chanelRepository.searchChannelByChannel_nameContains(channelName);
+    }
 }

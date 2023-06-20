@@ -20,7 +20,7 @@ public class Channel {
     @Column(name = "channel_id")
     private Long channel_id;
     @Column(name = "chanel_name")
-    private String chanel_name;
+        private String chanel_name;
     @Column(name = "create_at")
     private Date create_at;
     @Column(columnDefinition = "int default 0")

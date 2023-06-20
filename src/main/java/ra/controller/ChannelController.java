@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ra.dto.requets.ChannelRequest;
 import ra.dto.requets.ResponseMessage;
 import ra.entity.Channel;
+import ra.entity.Videos;
 import ra.entity.user.Users;
 import ra.repository.IChanelRepository;
 import ra.service.IChanelService;
@@ -41,6 +42,7 @@ public class ChannelController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
     public ResponseEntity<?> createChannel(@RequestBody ChannelRequest channelRequest) {
         Long user_id = channelRequest.getUser();
         Users user =  userService.findById(user_id);
@@ -65,6 +67,7 @@ public class ChannelController {
     }
 
 @PutMapping("/update")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
 public ResponseEntity<?> updateChannel(@RequestBody Channel channel) {
     if (channel != null) {
         channel.setCreate_at(new Date());
@@ -80,6 +83,7 @@ public ResponseEntity<?> updateChannel(@RequestBody Channel channel) {
         return ResponseEntity.ok(new ResponseMessage("xóa thành công"));
     }
 @GetMapping("/channel/{channelId}")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('PM')|| hasAuthority('USER')")
 public ResponseEntity<?> getChannel(@PathVariable Long channelId) {
     // Lấy thông tin kênh từ cơ sở dữ liệu
     Channel channel = chanelService.findById(channelId);
@@ -105,5 +109,9 @@ public ResponseEntity<?> getChannel(@PathVariable Long channelId) {
     // Trả về thông tin kênh nếu không có vấn đề
     return ResponseEntity.ok(channel);
 }
+    @GetMapping("/search/{name}")
+    public List<Channel> search(@PathVariable("name") String name){
+        return  chanelService.searchChannelByChannel_nameContains(name);
+    }
 }
 
